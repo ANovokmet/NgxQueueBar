@@ -46,5 +46,5 @@ open(message: string, action: string) {
 
 ## Note
 
-You should really only use MatSnackBar because [Material specification](https://material.io/components/snackbars#behavior) discourages stacking snackbars or displaying them consecutively.  
+You should really only use MatSnackBar because [Material specification](https://material.io/components/snackbars#behavior) discourages stacking snackbars or displaying them consecutively side by side.  
 
