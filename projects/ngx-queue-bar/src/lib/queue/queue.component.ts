@@ -1,16 +1,15 @@
 import {
-    Component, OnInit, ViewChild, ViewContainerRef, ComponentRef, TemplateRef, ChangeDetectorRef,
-    AfterContentChecked, AfterViewInit, ViewRef, ElementRef
+    Component, OnInit, ViewChild, ViewContainerRef, ComponentRef, ElementRef
 } from '@angular/core';
-import { MatStackBarRef } from '../stack-bar-ref';
-import { ReplaySubject } from 'rxjs';
-import { StackBarContainerComponent } from '../stack-bar-container/stack-bar-container.component';
 import { MatSnackBarConfig } from '@angular/material/snack-bar';
 
 @Component({
-    selector: 'lib-queue',
+    selector: 'qb-queue',
     templateUrl: './queue.component.html',
-    styleUrls: ['./queue.component.css']
+    styleUrls: ['./queue.component.css'],
+    host: {
+        class: 'qb-queue'
+    }
 })
 export class QueueComponent implements OnInit {
 

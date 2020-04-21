@@ -20,9 +20,9 @@
       "dom"
     ],
     "paths": {
-      "mat-stack-bar": [
-        "dist/mat-stack-bar/mat-stack-bar",
-        "dist/mat-stack-bar"
+      "ngx-queue-bar": [
+        "dist/ngx-queue-bar/ngx-queue-bar",
+        "dist/ngx-queue-bar"
       ]
     }
   }

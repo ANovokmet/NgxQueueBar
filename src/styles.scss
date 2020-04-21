@@ -74,3 +74,12 @@ app-root {
     
     background-image: linear-gradient(176deg, #fafafa 70%, #ffb5ce calc(70% + 2px));
 }
+
+.mat-snack-bar-handset .qb-queue {
+    width: 100%;
+    margin: 0 8px;
+
+    .mat-snack-bar-container {
+        margin: 8px 0;
+    }
+}

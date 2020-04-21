@@ -4,14 +4,14 @@ import {
 } from '@angular/core';
 import { CdkPortalOutlet, ComponentPortal, TemplatePortal, BasePortalOutlet } from '@angular/cdk/portal';
 import { matSnackBarAnimations } from '@angular/material/snack-bar';
+import { AnimationEvent } from '@angular/animations';
 import { Subject, Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { AnimationEvent } from '@angular/animations';
 
 @Component({
-    selector: 'lib-stack-bar-container',
-    templateUrl: './stack-bar-container.component.html',
-    styleUrls: ['./stack-bar-container.component.scss'],
+    selector: 'qb-queue-bar-container',
+    templateUrl: './queue-bar-container.component.html',
+    styleUrls: ['./queue-bar-container.component.scss'],
     changeDetection: ChangeDetectionStrategy.Default,
     encapsulation: ViewEncapsulation.None,
     animations: [matSnackBarAnimations.snackBarState],
@@ -22,7 +22,7 @@ import { AnimationEvent } from '@angular/animations';
         '(@state.done)': 'onAnimationEnd($event)'
     },
 })
-export class StackBarContainerComponent implements OnDestroy {
+export class QueueBarContainerComponent implements OnDestroy {
     private _destroyed = false;
     @ViewChild(CdkPortalOutlet, { static: true }) _portalOutlet: CdkPortalOutlet;
     readonly _onExit: Subject<any> = new Subject();

@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "MatStackBarDemo": {
+    "QueueBarDemo": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -18,7 +18,7 @@
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "aot": true,
-            "outputPath": "dist/MatStackBarDemo",
+            "outputPath": "dist/QueueBarDemo",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -67,18 +67,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "MatStackBarDemo:build"
+            "browserTarget": "QueueBarDemo:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "MatStackBarDemo:build:production"
+              "browserTarget": "QueueBarDemo:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "MatStackBarDemo:build"
+            "browserTarget": "QueueBarDemo:build"
           }
         },
         "test": {
@@ -113,7 +113,7 @@
         }
       }
     },
-    "MatStackBarDemo-e2e": {
+    "QueueBarDemo-e2e": {
       "root": "e2e/",
       "projectType": "application",
       "prefix": "",
@@ -122,11 +122,11 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "MatStackBarDemo:serve"
+            "devServerTarget": "QueueBarDemo:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "MatStackBarDemo:serve:production"
+              "devServerTarget": "QueueBarDemo:serve:production"
             }
           }
         },
@@ -141,38 +141,38 @@
         }
       }
     },
-    "mat-stack-bar": {
+    "ngx-queue-bar": {
       "projectType": "library",
-      "root": "projects/mat-stack-bar",
-      "sourceRoot": "projects/mat-stack-bar/src",
-      "prefix": "lib",
+      "root": "projects/ngx-queue-bar",
+      "sourceRoot": "projects/ngx-queue-bar/src",
+      "prefix": "qb",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-ng-packagr:build",
           "options": {
-            "tsConfig": "projects/mat-stack-bar/tsconfig.lib.json",
-            "project": "projects/mat-stack-bar/ng-package.json"
+            "tsConfig": "projects/ngx-queue-bar/tsconfig.lib.json",
+            "project": "projects/ngx-queue-bar/ng-package.json"
           },
           "configurations": {
             "production": {
-              "tsConfig": "projects/mat-stack-bar/tsconfig.lib.prod.json"
+              "tsConfig": "projects/ng-queue-bar/tsconfig.lib.prod.json"
             }
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/mat-stack-bar/src/test.ts",
-            "tsConfig": "projects/mat-stack-bar/tsconfig.spec.json",
-            "karmaConfig": "projects/mat-stack-bar/karma.conf.js"
+            "main": "projects/ngx-queue-bar/src/test.ts",
+            "tsConfig": "projects/ngx-queue-bar/tsconfig.spec.json",
+            "karmaConfig": "projects/ngx-queue-bar/karma.conf.js"
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "projects/mat-stack-bar/tsconfig.lib.json",
-              "projects/mat-stack-bar/tsconfig.spec.json"
+              "projects/ngx-queue-bar/tsconfig.lib.json",
+              "projects/ngx-queue-bar/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"
@@ -182,5 +182,5 @@
       }
     }
   },
-  "defaultProject": "MatStackBarDemo"
+  "defaultProject": "QueueBarDemo"
 }

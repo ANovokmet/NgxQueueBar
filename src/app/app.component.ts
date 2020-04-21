@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { MatStackBarService } from 'projects/mat-stack-bar/src/public-api';
+import { QueueBarService } from 'projects/ngx-queue-bar/src/public-api';
 import { MatSnackBarVerticalPosition, MatSnackBarHorizontalPosition } from '@angular/material/snack-bar';
 
 @Component({
@@ -15,11 +15,11 @@ export class AppComponent {
     /**
      *
      */
-    constructor(private _stackBar: MatStackBarService) {
+    constructor(private _queueBar: QueueBarService) {
     }
 
     openSnackBar(message: string, action: string) {
-        this._stackBar.open(message, action, {
+        this._queueBar.open(message, action, {
             duration: this.durationInSeconds * 1000,
             horizontalPosition: this.horizontalPosition,
             verticalPosition: this.verticalPosition

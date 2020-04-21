@@ -3,16 +3,16 @@ import { MatSnackBarDismiss } from '@angular/material/snack-bar';
 import { Subject, Observable } from 'rxjs';
 import { Portal } from '@angular/cdk/portal';
 
-import { StackBarContainerComponent } from './stack-bar-container/stack-bar-container.component';
+import { QueueBarContainerComponent } from './queue-bar-container/queue-bar-container.component';
 import { QueueComponent } from './queue/queue.component';
 
 /** Maximum amount of milliseconds that can be passed into setTimeout. */
 const MAX_TIMEOUT = Math.pow(2, 31) - 1;
 
-export class MatStackBarRef<T> {
+export class QueueBarRef<T> {
     instance: T;
-    container: ComponentRef<StackBarContainerComponent>;
-    containerInstance: StackBarContainerComponent;
+    container: ComponentRef<QueueBarContainerComponent>;
+    containerInstance: QueueBarContainerComponent;
     queue: QueueComponent;
     portal: Portal<any>;
 
@@ -31,14 +31,14 @@ export class MatStackBarRef<T> {
 
     private _dismissedByAction = false;
 
-    constructor(queue: QueueComponent, container: ComponentRef<StackBarContainerComponent>) {
+    constructor(queue: QueueComponent, container: ComponentRef<QueueBarContainerComponent>) {
         this.queue = queue;
         this.container = container;
         this.containerInstance = container.instance;
 
 
         this.onAction().subscribe(() => this.dismiss());
-        // containerInstance._onExit.subscribe(() => this._finishDismiss());
+        this.containerInstance._onExit.subscribe(() => this._finishDismiss());
     }
 
     /** Dismisses the snack bar. */

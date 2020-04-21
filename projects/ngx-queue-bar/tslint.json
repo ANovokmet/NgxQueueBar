@@ -4,15 +4,16 @@
         "directive-selector": [
             true,
             "attribute",
-            "lib",
+            "qb",
             "camelCase"
         ],
         "component-selector": [
             true,
             "element",
-            "lib",
+            "qb",
             "kebab-case"
         ],
-        "no-host-metadata-property": false
+        "no-host-metadata-property": false,
+        "no-redundant-jsdoc": false
     }
 }

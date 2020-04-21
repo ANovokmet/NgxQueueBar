@@ -4,15 +4,15 @@ import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
-import { StackBarContainerComponent } from './stack-bar-container/stack-bar-container.component';
-import { SimpleStackBarComponent } from './simple-stack-bar/simple-stack-bar.component';
+import { QueueBarContainerComponent } from './queue-bar-container/queue-bar-container.component';
+import { SimpleQueueBarComponent } from './simple-queue-bar/simple-queue-bar.component';
 import { QueueComponent } from './queue/queue.component';
 import { PortalModule } from '@angular/cdk/portal';
 
 @NgModule({
-    declarations: [StackBarContainerComponent, SimpleStackBarComponent, QueueComponent],
+    declarations: [QueueBarContainerComponent, SimpleQueueBarComponent, QueueComponent],
     imports: [CommonModule, OverlayModule, MatButtonModule, MatSnackBarModule, PortalModule],
     exports: [],
-    entryComponents: [StackBarContainerComponent, SimpleStackBarComponent],
+    entryComponents: [QueueBarContainerComponent, SimpleQueueBarComponent],
 })
-export class MatStackBarModule { }
+export class QueueBarModule { }

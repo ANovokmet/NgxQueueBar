@@ -1,35 +1,36 @@
 import { Injectable, Injector, EmbeddedViewRef, TemplateRef, ComponentFactoryResolver, InjectionToken, Inject } from '@angular/core';
 import { PortalInjector, ComponentPortal, ComponentType } from '@angular/cdk/portal';
 import { OverlayRef, Overlay, OverlayConfig } from '@angular/cdk/overlay';
-import { MatSnackBarConfig } from '@angular/material/snack-bar';
-import { BreakpointObserver } from '@angular/cdk/layout';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { MatSnackBarConfig } from '@angular/material/snack-bar';
+import { takeUntil } from 'rxjs/operators';
 
-import { SimpleStackBarComponent } from './simple-stack-bar/simple-stack-bar.component';
-import { MatStackBarRef } from './stack-bar-ref';
-import { MAT_STACK_BAR_DATA } from './stack-bar-config';
-import { StackBarContainerComponent } from './stack-bar-container/stack-bar-container.component';
-import { MatStackBarModule } from './mat-stack-bar.module';
+import { QueueBarModule } from './queue-bar.module';
 import { QueueComponent } from './queue/queue.component';
+import { QueueBarContainerComponent } from './queue-bar-container/queue-bar-container.component';
+import { SimpleQueueBarComponent } from './simple-queue-bar/simple-queue-bar.component';
+import { QueueBarRef } from './queue-bar-ref';
+import { QUEUE_BAR_DATA } from './queue-bar-config';
 
 
 /** Injection token that can be used to specify default snack bar. */
-export const MAT_STACK_BAR_DEFAULT_OPTIONS =
-    new InjectionToken<MatSnackBarConfig>('mat-stack-bar-default-options', {
+export const QUEUE_BAR_DEFAULT_OPTIONS =
+    new InjectionToken<MatSnackBarConfig>('queue-bar-default-options', {
         providedIn: 'root',
-        factory: MAT_STACK_BAR_DEFAULT_OPTIONS_FACTORY,
+        factory: QUEUE_BAR_DEFAULT_OPTIONS_FACTORY,
     });
 
 /** @docs-private */
-export function MAT_STACK_BAR_DEFAULT_OPTIONS_FACTORY(): MatSnackBarConfig {
+export function QUEUE_BAR_DEFAULT_OPTIONS_FACTORY(): MatSnackBarConfig {
     return new MatSnackBarConfig();
 }
 
 /**
  * Service to queue material snack bars.
  */
-@Injectable({ providedIn: MatStackBarModule })
-export class MatStackBarService {
+@Injectable({ providedIn: QueueBarModule })
+export class QueueBarService {
     overlayRef: OverlayRef;
     queue: QueueComponent;
 
@@ -39,7 +40,7 @@ export class MatStackBarService {
         private _injector: Injector,
         private _breakpointObserver: BreakpointObserver,
         private _resolver: ComponentFactoryResolver,
-        @Inject(MAT_STACK_BAR_DEFAULT_OPTIONS) private _defaultConfig: MatSnackBarConfig
+        @Inject(QUEUE_BAR_DEFAULT_OPTIONS) private _defaultConfig: MatSnackBarConfig
     ) { }
 
     /**
@@ -49,8 +50,8 @@ export class MatStackBarService {
      * @param component Component to be instantiated.
      * @param config Extra configuration for the snack bar.
      */
-    openFromComponent<T>(component: ComponentType<T>, config?: MatSnackBarConfig): MatStackBarRef<T> {
-        return this._attach(component, config) as MatStackBarRef<T>;
+    openFromComponent<T>(component: ComponentType<T>, config?: MatSnackBarConfig): QueueBarRef<T> {
+        return this._attach(component, config) as QueueBarRef<T>;
     }
 
     /**
@@ -60,7 +61,7 @@ export class MatStackBarService {
      * @param template Template to be instantiated.
      * @param config Extra configuration for the snack bar.
      */
-    openFromTemplate(template: TemplateRef<any>, config?: MatSnackBarConfig): MatStackBarRef<EmbeddedViewRef<any>> {
+    openFromTemplate(template: TemplateRef<any>, config?: MatSnackBarConfig): QueueBarRef<EmbeddedViewRef<any>> {
         return this._attach(template, config);
     }
 
@@ -70,7 +71,7 @@ export class MatStackBarService {
      * @param action The label for the snackbar action.
      * @param config Additional configuration options for the snackbar.
      */
-    open(message: string, action: string = '', config?: MatSnackBarConfig): MatStackBarRef<SimpleStackBarComponent> {
+    open(message: string, action: string = '', config?: MatSnackBarConfig): QueueBarRef<SimpleQueueBarComponent> {
         const _config = { ...config }; // ...this._defaultConfig,
 
         // Since the user doesn't have access to the component, we can
@@ -81,28 +82,28 @@ export class MatStackBarService {
             _config.announcementMessage = message;
         }
 
-        return this.openFromComponent(SimpleStackBarComponent, _config);
+        return this.openFromComponent(SimpleQueueBarComponent, _config);
     }
 
 
     /**
-     * Places a new component or a template as the content of the snack bar container.
+     * Places a new component or a template as the content of the queue bar container.
+     * Pushes the queue bar container to the queue.
      */
-    private _attach<T>(content: ComponentType<T> | TemplateRef<T>, userConfig?: MatSnackBarConfig):
-        MatStackBarRef<T | EmbeddedViewRef<any>> {
+    private _attach<T>(content: ComponentType<T> | TemplateRef<T>, userConfig?: MatSnackBarConfig): QueueBarRef<T | EmbeddedViewRef<any>> {
 
         const config = { ...new MatSnackBarConfig(), ...this._defaultConfig, ...userConfig };
 
         if (!this.queue || !this.overlayRef) {
             const overlayRef = this._createOverlay(config);
-            const queue = this._attachSnackBarQueue(overlayRef, config);
+            const queue = this._attachQueue(overlayRef, config);
 
             this.overlayRef = overlayRef;
             this.queue = queue;
         }
 
         const container = this.createContainerRef();
-        const snackBarRef = new MatStackBarRef<T | EmbeddedViewRef<any>>(this.queue, container);
+        const snackBarRef = new QueueBarRef<T | EmbeddedViewRef<any>>(this.queue, container);
         // we need to create the containers manually to subscribe to events;
         snackBarRef.container = container;
         snackBarRef.containerInstance = container.instance;
@@ -123,18 +124,25 @@ export class MatStackBarService {
             snackBarRef.instance = contentRef.instance;
         }
 
-        // snackBarRef.containerInstance.enter();
+        this._breakpointObserver.observe(Breakpoints.HandsetPortrait).pipe(
+            takeUntil(this.overlayRef.detachments())
+        ).subscribe(state => {
+            const classList = this.overlayRef.overlayElement.classList;
+            const className = 'mat-snack-bar-handset';
+            state.matches ? classList.add(className) : classList.remove(className);
+        });
+
         this._animateSnackBar(snackBarRef, config);
         return snackBarRef;
     }
 
     private createContainerRef() {
-        const factory = this._resolver.resolveComponentFactory(StackBarContainerComponent);
+        const factory = this._resolver.resolveComponentFactory(QueueBarContainerComponent);
         const containerRef = factory.create(this._injector);
         return containerRef;
     }
 
-    private _animateSnackBar(snackBarRef: MatStackBarRef<any>, config: MatSnackBarConfig) {
+    private _animateSnackBar(snackBarRef: QueueBarRef<any>, config: MatSnackBarConfig) {
         // When the snackbar is dismissed, clear the reference to it.
         snackBarRef.afterDismissed().subscribe(() => {
             // Clear the snackbar ref if it hasn't already been replaced by a newer snackbar.
@@ -170,8 +178,12 @@ export class MatStackBarService {
         }
     }
 
-    // Use to attach the whole stackbar Queue
-    private _attachSnackBarQueue(overlayRef: OverlayRef, config: MatSnackBarConfig) {
+    /**
+     * Places the Queue in the overlay.
+     * @param overlayRef
+     * @param config
+     */
+    private _attachQueue(overlayRef: OverlayRef, config: MatSnackBarConfig) {
         const userInjector = config && config.viewContainerRef && config.viewContainerRef.injector;
         const injector = new PortalInjector(userInjector || this._injector, new WeakMap([
             [MatSnackBarConfig, config]
@@ -214,12 +226,12 @@ export class MatStackBarService {
         return this._overlay.create(overlayConfig);
     }
 
-    private _createInjector<T>(config: MatSnackBarConfig, stackBarRef: MatStackBarRef<T>): PortalInjector {
+    private _createInjector<T>(config: MatSnackBarConfig, queueBarRef: QueueBarRef<T>): PortalInjector {
         const userInjector = config && config.viewContainerRef && config.viewContainerRef.injector;
 
         return new PortalInjector(userInjector || this._injector, new WeakMap<any, any>([
-            [MatStackBarRef, stackBarRef],
-            [MAT_STACK_BAR_DATA, config.data]
+            [QueueBarRef, queueBarRef],
+            [QUEUE_BAR_DATA, config.data]
         ]));
     }
 }

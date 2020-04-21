@@ -1,5 +1,5 @@
 {
-  "name": "mat-stack-bar",
+  "name": "queue-bar",
   "version": "0.0.1",
   "peerDependencies": {
     "@angular/common": "^9.1.0",
