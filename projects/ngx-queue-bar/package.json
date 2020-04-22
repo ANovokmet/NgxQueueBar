@@ -1,12 +1,26 @@
 {
-  "name": "queue-bar",
-  "version": "0.0.1",
-  "peerDependencies": {
-    "@angular/common": "^9.1.0",
-    "@angular/core": "^9.1.0",
-    "tslib": "^1.10.0",
-    "@angular/material": "^9.2.0"
-  },
-  "dependencies": {
-  }
+    "name": "ngx-queue-bar",
+    "version": "0.0.3",
+    "description": "Display multiple snackbars in Angular",
+    "author": "ANovokmet <ante.je.zakon@gmail.com>",
+    "keywords": [
+        "angular",
+        "snackbar",
+        "multiple",
+        "angular-material",
+        "ngx-queue-bar"
+    ],
+    "license": "MIT",
+    "homepage": "https://github.com/ANovokmet/NgxQueueBar#readme",
+    "repository": "github:ANovokmet/NgxQueueBar",
+    "bugs": {
+        "url": "https://github.com/ANovokmet/NgxQueueBar/issues"
+    },
+    "peerDependencies": {
+        "@angular/common": "^9.1.0",
+        "@angular/core": "^9.1.0",
+        "tslib": "^1.10.0",
+        "@angular/material": "^9.2.0"
+    },
+    "dependencies": {}
 }

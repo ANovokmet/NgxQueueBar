@@ -1,24 +1,49 @@
-# QueueBar
+# NgxQueueBar
 
-This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.0.
+Stack snackbars on top of one another. Display multiple snackbars at once.
 
-## Code scaffolding
+This library is basically a copy of [MatSnackBar](https://github.com/angular/components/tree/master/src/material/snack-bar), with some key methods changed. Because of this you can use it using the API identical to MatSnackBar one.
 
-Run `ng generate component component-name --project ngx-queue-bar` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project ngx-queue-bar`.
-> Note: Don't forget to add `--projectngx-queue-bar` or else it will be added to the default project in your `angular.json` file. 
+## Demo
 
-## Build
+Try out the [Demo](https://anovokmet.github.io/NgxQueueBar/)
 
-Run `ng build ngx-queue-bar` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Usage
 
-## Publishing
+Install the package:
 
-After building your library with `ng build ngx-queue-bar`, go to the dist folder `cd dist/ngx-queue-bar` and run `npm publish`.
+```
+npm install ngx-queue-bar --save
+```
 
-## Running unit tests
+Import QueueBarModule:
 
-Run `ng test ngx-queue-bar` to execute the unit tests via [Karma](https://karma-runner.github.io).
+```
+import { QueueBarModule } from 'ngx-queue-bar';
 
-## Further help
+@NgModule({
+    declarations: [AppComponent],
+    imports: [
+        ...
+        QueueBarModule
+    ],
+    providers: [],
+    bootstrap: [AppComponent]
+})
+export class AppModule { }
+```
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+Queue a snackbar:
+```
+constructor(private _queueBar: QueueBarService) {}
+
+open(message: string, action: string) {
+    this._queueBar.open(message, action, {
+        duration: 2000,
+    });
+}
+```
+
+## Note
+
+You should really only use MatSnackBar because [Material specification](https://material.io/components/snackbars#behavior) discourages stacking snackbars or displaying them consecutively side by side.  
