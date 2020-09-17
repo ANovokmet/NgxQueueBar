@@ -3,10 +3,11 @@ import {
     ChangeDetectorRef, ViewEncapsulation, ChangeDetectionStrategy, NgZone, ElementRef, OnDestroy
 } from '@angular/core';
 import { CdkPortalOutlet, ComponentPortal, TemplatePortal, BasePortalOutlet } from '@angular/cdk/portal';
-import { matSnackBarAnimations } from '@angular/material/snack-bar';
+import { queueBarAnimations } from '../queue-bar-animations';
 import { AnimationEvent } from '@angular/animations';
 import { Subject, Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
+
 
 @Component({
     selector: 'qb-queue-bar-container',
@@ -14,7 +15,7 @@ import { take } from 'rxjs/operators';
     styleUrls: ['./queue-bar-container.component.scss'],
     changeDetection: ChangeDetectionStrategy.Default,
     encapsulation: ViewEncapsulation.None,
-    animations: [matSnackBarAnimations.snackBarState],
+    animations: [queueBarAnimations.queueBarState],
     host: {
         '[attr.role]': '_role',
         'class': 'mat-snack-bar-container',

@@ -1,6 +1,6 @@
 {
     "name": "ngx-queue-bar",
-    "version": "0.0.3",
+    "version": "1.0.0",
     "description": "Display multiple snackbars in Angular",
     "author": "ANovokmet <ante.je.zakon@gmail.com>",
     "keywords": [

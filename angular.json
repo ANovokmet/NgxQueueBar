@@ -155,7 +155,7 @@
           },
           "configurations": {
             "production": {
-              "tsConfig": "projects/ng-queue-bar/tsconfig.lib.prod.json"
+              "tsConfig": "projects/ngx-queue-bar/tsconfig.lib.prod.json"
             }
           }
         },
